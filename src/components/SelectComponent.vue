@@ -2,21 +2,45 @@
   <main class="main">
     <div @click="toggleSelect" class="select">
       <p class="label">
-        {{ label }}: <span class="value">{{ value }}</span>
+        {{ label }}:
+        <span class="value">{{
+          Array.isArray(value)
+            ? value.length > 1
+              ? "Multiple Selected"
+              : ""
+            : value
+        }}</span>
       </p>
 
       <div class="caret">
         <img :src="isSelect ? caretup : caretdown" alt="" />
       </div>
 
-      <div v-show="isSelect" class="dropdown">
+      <div v-show="isSelect && !multi" class="dropdown">
         <div
           v-for="opt in options"
           :key="opt"
-          :class="selected === opt ? 'active' : undefined"
+          :class="value === opt ? 'active' : undefined"
           class="dropdown-item"
+          @click="updateValue(opt)"
         >
           {{ opt }}
+        </div>
+      </div>
+
+      <div v-show="isSelect && multi" class="dropdown">
+        <div
+          v-for="opt in options"
+          :key="opt"
+          :class="value === opt ? 'active' : undefined"
+          class="dropdown-item"
+          @click="updateValue(opt)"
+        >
+          <div v-for="(value, key) in opt" :key="key">
+            <p class="multi-cat">{{ key }}</p>
+
+            <div class="sub-options"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -28,14 +52,24 @@ import { ref } from "vue";
 import caretdown from "../assets/caret-down.svg";
 import caretup from "../assets/caret-up.svg";
 
-const props = defineProps({ label: { type: String }, value: { type: String } });
+const props = defineProps({
+  label: { type: String },
+  value: { type: [String, Array] },
+  options: { type: Array },
+  multi: { type: Boolean },
+});
+const emit = defineEmits(["update"]);
 const isSelect = ref(false);
-const selected = ref("This Month");
-const options = ref(["Last 7 Days", "This Month", "This Year ", "Custom"]);
 
 const toggleSelect = () => {
   isSelect.value = !isSelect.value;
 };
+
+function updateValue(opt) {
+  if (opt && typeof opt === "string") {
+    emit("update", opt);
+  }
+}
 </script>
 
 <style scoped>
@@ -69,6 +103,7 @@ const toggleSelect = () => {
   line-height: 20px;
   color: #1a1a21;
   width: 90%;
+  text-transform: capitalize;
 }
 
 .value {
@@ -100,5 +135,13 @@ const toggleSelect = () => {
 .active {
   background-color: #f2f7ff;
   font-weight: 600;
+}
+
+.multi-cat {
+  font-size: 12px;
+  color: #9098a3;
+  line-height: 14.52px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 </style>

@@ -56,8 +56,8 @@ export default {
   display: flex;
   align-items: flex-end;
   position: relative;
-  padding-bottom: 20px; /* Space for X-axis labels */
-  margin-top: 50px;
+  padding-bottom: 10px; /* Space for X-axis labels */
+  margin-top: 30px;
 }
 
 /* Y-Axis Labels */

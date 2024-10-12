@@ -1,9 +1,15 @@
 <template>
   <main>
     <section class="filters">
-      <div v-for="i in 3" :key="i" class="timeframe">
+      <div v-for="(value, key) in filterData" :key="key" class="timeframe">
         <div>
-          <SelectComponent label="Timeframe" value="This month" />
+          <SelectComponent
+            :options="filterData[key].options"
+            :multi="filterData[key].multi"
+            :label="key"
+            @update="($event) => (filterData[key].value = $event)"
+            :value="filterData[key].value"
+          />
         </div>
       </div>
     </section>
@@ -11,7 +17,35 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import SelectComponent from "./SelectComponent.vue";
+
+const filterData = ref({
+  timeframe: {
+    value: "This Month",
+    options: ["Last 7 Days", "This Month", "This Year ", "Custom"],
+  },
+  people: {
+    value: [],
+    multi: true,
+    options: [
+      { groups: ["All users", "Managers", "Trainers"] },
+
+      { users: ["Adrian Lu", "Evelyn Hamilton"] },
+    ],
+  },
+  topic: {
+    value: "",
+    options: [
+      "Food Safety",
+      "Covid Protocols",
+      "Compliance Basics Procedures",
+      "Cyber Security Basics",
+      "Company Networking",
+      "Social Media Policies",
+    ],
+  },
+});
 </script>
 
 <style scoped>

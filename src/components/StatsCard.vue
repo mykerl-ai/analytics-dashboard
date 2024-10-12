@@ -18,7 +18,13 @@
     </section>
 
     <div class="activity-chart">
-      <h3>Activity</h3>
+      <div class="activity-head">
+        <h3>Activity</h3>
+        <div class="activity-select">
+          <p>Month</p>
+          <img src="../assets/caret-outline-down.svg" alt="" />
+        </div>
+      </div>
       <BarChart />
     </div>
   </main>
@@ -58,9 +64,7 @@ const stats = ref([
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
-.no-stretch {
-  align-self: self-start; /* This item won't stretch and will align to the top */
-}
+
 .stat-card {
   background-color: #ffffff;
   padding: 16px;
@@ -107,13 +111,31 @@ const stats = ref([
   /* flex: 2 1 400px; */
 }
 
+.activity-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.8px solid #e4e5e7;
+}
+
+.activity-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.activity-select p {
+  font-size: 12px;
+  line-height: 14.52px;
+  color: #0f2552;
+  font-weight: 600;
+}
 .activity-chart h3 {
   font-size: 14px;
   line-height: 16.94px;
   color: #4d4d4d;
   margin-bottom: 15px;
   font-weight: 600;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 8px;
+  /* padding-bottom: 8px; */
 }
 </style>
