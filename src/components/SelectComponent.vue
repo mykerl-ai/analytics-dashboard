@@ -39,7 +39,17 @@
           <div v-for="(value, key) in opt" :key="key">
             <p class="multi-cat">{{ key }}</p>
 
-            <div class="sub-options"></div>
+            <div v-for="sub in value.options" :key="sub" class="sub-options">
+              <div class="opt-flex">
+                <img
+                  v-if="multiValue.includes(sub)"
+                  src="../assets/radio-inactive.svg"
+                  alt=""
+                />
+                <img v-else src="../assets/radio-active.svg" alt="" />
+                <p>{{ sub }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -64,6 +74,8 @@ const isSelect = ref(false);
 const toggleSelect = () => {
   isSelect.value = !isSelect.value;
 };
+
+const multiValue = ref([]);
 
 function updateValue(opt) {
   if (opt && typeof opt === "string") {
@@ -143,5 +155,16 @@ function updateValue(opt) {
   line-height: 14.52px;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.sub-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opt-flex {
+  display: flex;
+  gap: 4px;
 }
 </style>
