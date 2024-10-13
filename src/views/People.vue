@@ -48,63 +48,29 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
+import { useStore } from "vuex";
+import { UserItem } from "../types/UserItem";
+
+// Define the store
+const store = useStore();
 import Avatar from "../components/Avatar.vue";
 import Arrow from "../components/vectors/arrow.vue";
 import Filters from "../components/Filters.vue";
 import Header from "../components/Header.vue";
 import Pagination from "../components/Pagination.vue";
 
-// Define types for user items
-interface User {
-  name: string;
-  score: string;
-  email: string;
-  joinedDate: string;
-  increase: boolean;
-  image: () => Promise<{ default: string }>; // Lazy load image function
-}
-
 const itemsPerPage = ref<number>(5); // Number of items to display per page
 const currentPage = ref<number>(1);
 
-// Data for user leaderboard
-const userBoard = ref<User[]>([
-  {
-    name: "Jesse Thomas",
-    score: "637 Points - 98% Correct",
-    email: "jesse@example.com",
-    joinedDate: "2022-01-15",
-    increase: true,
-    image: () => import("../assets/person1.png"),
-  },
-  {
-    name: "Thisal Mathiyazhagan",
-    score: "500 Points - 85% Correct",
-    email: "thisal@example.com",
-    joinedDate: "2021-05-10",
-    increase: false,
-    image: () => import("../assets/person2.png"),
-  },
-  {
-    name: "Helen Chuang",
-    score: "800 Points - 95% Correct",
-    email: "helen@example.com",
-    joinedDate: "2022-03-22",
-    increase: true,
-    image: () => import("../assets/person3.png"),
-  },
-  {
-    name: "Lura Silverman",
-    score: "450 Points - 75% Correct",
-    email: "lura@example.com",
-    joinedDate: "2023-07-30",
-    increase: true,
-    image: () => import("../assets/person4.png"),
-  },
-]);
-
 const itemImages = ref<{ [key: string]: string }>({});
 
+// Fetch user board from Vuex store
+const userBoard = computed(() => {
+  const users: UserItem[] = store.getters.getUserBoard;
+  return users.map((user) => ({
+    ...user,
+  }));
+});
 // Paginated users based on current page
 const paginatedUsers = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;

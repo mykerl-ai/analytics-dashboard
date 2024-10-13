@@ -52,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+import { TopicItem } from "../types/UserItem";
+
 import { ref } from "vue";
 import ChartComponent from "./ChartComponent.vue";
 import Range from "./Range.vue";
@@ -61,13 +63,6 @@ import topic3 from "../assets/topic3.png";
 import topic4 from "../assets/topic4.png";
 import topic5 from "../assets/topic5.png";
 import topic6 from "../assets/topic6.png";
-
-// Define interfaces for topic items
-interface TopicItem {
-  label: string;
-  value: string;
-  image: string; // The image is a string URL
-}
 
 const weakestTopics = ref<TopicItem[]>([
   {

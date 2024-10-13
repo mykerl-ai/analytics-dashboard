@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import "./style.css";
 import "./index.css";
 import router from "./router";
+import store from "./store"; // Import the store
 
 import PrimeVue from "primevue/config";
 import Aura from "@primevue/themes/aura";
@@ -15,6 +16,7 @@ app
       preset: Aura,
     },
   })
+  .use(store)
   .use(router)
 
   .mount("#app");

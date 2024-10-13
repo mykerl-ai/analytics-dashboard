@@ -42,29 +42,14 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { UserItem, BoardItem, GroupItem } from "../types/UserItem";
+
+// Define the store
+const store = useStore();
 import ChartComponent from "./ChartComponent.vue";
 import Avatar from "./Avatar.vue";
 import arrow from "./vectors/arrow.vue";
-
-// Define types for the board items
-interface BoardItem {
-  label: string;
-  value: string;
-}
-
-interface UserItem {
-  name: string;
-  score: string;
-  image: () => Promise<{ default: string }>; // Type for the dynamically imported image
-  increase: boolean;
-}
-
-interface GroupItem {
-  name: string;
-  score: string;
-  image: () => Promise<{ default: string }>;
-  increase: boolean;
-}
 
 const boards = ref<BoardItem[]>([
   { label: "Active Users", value: "27" },
@@ -76,30 +61,39 @@ const boards = ref<BoardItem[]>([
 ]);
 
 // Dynamically importing images for lazy loading
+// Data for user leaderboard
 const userBoard = ref<UserItem[]>([
   {
     name: "Jesse Thomas",
     score: "637 Points - 98% Correct",
-    image: () => import("../assets/person1.png"),
+    email: "jesse@example.com",
+    joinedDate: "2022-01-15",
     increase: true,
+    image: () => import("../assets/person1.png"),
   },
   {
     name: "Thisal Mathiyazhagan",
-    score: "637 Points - 98% Correct",
-    image: () => import("../assets/person2.png"),
+    score: "500 Points - 85% Correct",
+    email: "thisal@example.com",
+    joinedDate: "2021-05-10",
     increase: false,
+    image: () => import("../assets/person2.png"),
   },
   {
     name: "Helen Chuang",
-    score: "637 Points - 98% Correct",
-    image: () => import("../assets/person3.png"),
+    score: "800 Points - 95% Correct",
+    email: "helen@example.com",
+    joinedDate: "2022-03-22",
     increase: true,
+    image: () => import("../assets/person3.png"),
   },
   {
     name: "Lura Silverman",
-    score: "637 Points - 98% Correct",
-    image: () => import("../assets/person4.png"),
+    score: "450 Points - 75% Correct",
+    email: "lura@example.com",
+    joinedDate: "2023-07-30",
     increase: true,
+    image: () => import("../assets/person4.png"),
   },
 ]);
 
@@ -143,6 +137,9 @@ const loadImages = async () => {
 
 onMounted(async () => {
   await loadImages();
+
+  //save user data to store
+  store.dispatch("saveUserBoard", userBoard.value);
 });
 </script>
 
