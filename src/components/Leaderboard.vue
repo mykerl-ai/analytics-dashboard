@@ -40,16 +40,34 @@
   </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from "vue";
 import ChartComponent from "./ChartComponent.vue";
 import Avatar from "./Avatar.vue";
 import arrow from "./vectors/arrow.vue";
-const boards = ref([
-  {
-    label: "Active Users",
-    value: "27",
-  },
+
+// Define types for the board items
+interface BoardItem {
+  label: string;
+  value: string;
+}
+
+interface UserItem {
+  name: string;
+  score: string;
+  image: () => Promise<{ default: string }>; // Type for the dynamically imported image
+  increase: boolean;
+}
+
+interface GroupItem {
+  name: string;
+  score: string;
+  image: () => Promise<{ default: string }>;
+  increase: boolean;
+}
+
+const boards = ref<BoardItem[]>([
+  { label: "Active Users", value: "27" },
   { label: "Questions Answered", value: "3,298" },
   { label: "Av. Session Length", value: "2m 34s" },
   { label: "Starting Knowledge", value: "64%" },
@@ -57,8 +75,8 @@ const boards = ref([
   { label: "Knowledge Gain", value: "+34%" },
 ]);
 
-//Dynamically importing images for lazy loading
-const userBoard = ref([
+// Dynamically importing images for lazy loading
+const userBoard = ref<UserItem[]>([
   {
     name: "Jesse Thomas",
     score: "637 Points - 98% Correct",
@@ -77,7 +95,6 @@ const userBoard = ref([
     image: () => import("../assets/person3.png"),
     increase: true,
   },
-
   {
     name: "Lura Silverman",
     score: "637 Points - 98% Correct",
@@ -86,7 +103,7 @@ const userBoard = ref([
   },
 ]);
 
-const groupBoard = ref([
+const groupBoard = ref<GroupItem[]>([
   {
     name: "Houston Facility",
     score: "52 Points / User - 97% Correct",
@@ -105,7 +122,6 @@ const groupBoard = ref([
     image: () => import("../assets/person3.png"),
     increase: true,
   },
-
   {
     name: "Northeast Region",
     score: "52 Points / User - 97% Correct",
@@ -114,9 +130,9 @@ const groupBoard = ref([
   },
 ]);
 
-const itemImages = ref({});
+const itemImages = ref<{ [key: string]: string }>({}); // Typing the object to store loaded images
 
-//lazy load images by dynamic import
+// Lazy load images by dynamic import
 const loadImages = async () => {
   const imagePromises = userBoard.value.map(async (item) => {
     const image = await item.image();
@@ -205,5 +221,11 @@ onMounted(async () => {
   margin-bottom: 15px;
   font-weight: 600;
   padding-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .boards {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 </style>

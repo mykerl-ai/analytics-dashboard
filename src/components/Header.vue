@@ -1,8 +1,12 @@
 <template>
   <main>
     <header class="header">
-      <h1>Reports</h1>
-      <button class="download-btn btn">
+      <h1>{{ title }}</h1>
+      <button
+        v-if="title === 'Reports'"
+        role="download"
+        class="download-btn btn"
+      >
         <img src="../assets/download.svg" alt="" /> <span>Download</span>
       </button>
     </header>
@@ -10,8 +14,8 @@
   </main>
 </template>
 
-<script>
-export default {};
+<script setup>
+const props = defineProps({ title: { type: String, default: "Reports" } });
 </script>
 
 <style scoped>
@@ -49,5 +53,11 @@ export default {};
 .line {
   width: 100%;
   background-color: #000000;
+}
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 10px;
+  }
 }
 </style>

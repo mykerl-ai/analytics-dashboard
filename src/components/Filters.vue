@@ -100,4 +100,10 @@ const filterData = ref({
   font-size: 14px;
   color: #525f7f;
 }
+
+@media (max-width: 768px) {
+  .filters {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 </style>

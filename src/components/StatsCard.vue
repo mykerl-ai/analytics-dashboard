@@ -11,7 +11,7 @@
           {{ stat.value }}<span v-show="i === 0" class="label-fade">/80</span>
         </h2>
 
-        <div v-show="i > 2" style="width: 60%">
+        <div v-show="i > 2" class="chart-size">
           <ChartComponent />
         </div>
       </div>
@@ -137,5 +137,19 @@ const stats = ref([
   margin-bottom: 15px;
   font-weight: 600;
   /* padding-bottom: 8px; */
+}
+.chart-size {
+  width: 60%;
+}
+@media (max-width: 768px) {
+  .stats,
+  .stat-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .chart-size {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>
