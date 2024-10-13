@@ -54,7 +54,7 @@ To run this project locally, follow these steps:
 2. **Navigate into the project directory**:
 
 ```
-cd dashboard-implementation
+cd analytics-dashboard
 ```
 
 3. **npm install**:
